@@ -1,19 +1,18 @@
 package org.example.data.converter;
 
-import org.example.data.extendedModel.ExtendedRequests;
 import org.example.data.model.Employees;
-import org.example.data.model.Requests;
+import org.example.data.model.RequestStatuses;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class RequestsConverter extends ModelConverter {
+public class RequestsStatusesConverter extends  ModelConverter<RequestStatuses> {
     @Override
-    public Requests convert(ResultSet resultSet) {
-        List<Field> fields = List.of(Requests.class.getDeclaredFields());
-        Requests obj = new Requests();
+    public RequestStatuses convert(ResultSet resultSet) {
+        List<Field> fields = List.of(RequestStatuses.class.getDeclaredFields());
+        RequestStatuses obj = new RequestStatuses();
         for (Field currentField : fields){
             currentField.setAccessible(true);
             try {
@@ -26,7 +25,4 @@ public class RequestsConverter extends ModelConverter {
         }
         return obj;
     }
-
-
-
 }

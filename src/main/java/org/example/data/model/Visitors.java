@@ -34,10 +34,12 @@ public class Visitors {
 
     private String password;
 
+    private boolean is_in_black_list;
+
     public Visitors() {
     }
 
-    public Visitors(Integer id, String surname, String name, String patronymic, String phone, String email, String organization, String note, Date birth_date, String passport_series, String passport_number, String image_path, String passport_scan_path, String login, String password) {
+    public Visitors(Integer id, String surname, String name, String patronymic, String phone, String email, String organization, String note, Date birth_date, String passport_series, String passport_number, String image_path, String passport_scan_path, String login, String password, boolean is_in_black_list) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -53,6 +55,7 @@ public class Visitors {
         this.passport_scan_path = passport_scan_path;
         this.login = login;
         this.password = password;
+        this.is_in_black_list = is_in_black_list;
     }
 
     public Integer getId() {
@@ -175,6 +178,15 @@ public class Visitors {
         this.password = password;
     }
 
+
+    public boolean isIs_in_black_list() {
+        return is_in_black_list;
+    }
+
+    public void setIs_in_black_list(boolean is_in_black_list) {
+        this.is_in_black_list = is_in_black_list;
+    }
+
     @Override
     public String toString() {
         return "Visitors{" +
@@ -193,6 +205,7 @@ public class Visitors {
                 ", passport_scan_path='" + passport_scan_path + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", is_in_black_list=" + is_in_black_list +
                 '}';
     }
 }

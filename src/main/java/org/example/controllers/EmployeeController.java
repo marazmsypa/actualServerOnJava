@@ -20,6 +20,9 @@ public class EmployeeController extends BaseController {
         return repository.findALl();
     }
 
+    public Employees findByCode(Integer code) {
+        return repository.findByCode(code);
+    }
 
     @Override
     public void handle(HttpExchange exchange) {
@@ -28,8 +31,16 @@ public class EmployeeController extends BaseController {
             boolean requestHandled = false;
 
             if (exchange.getRequestURI().getPath().equals("/employees") &&
-                    exchange.getRequestMethod().equals("GET")) {
+                    exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getQuery().length() == 0) {
                 res = getAll();
+                requestHandled = true;
+            }
+
+            if (exchange.getRequestURI().getPath().equals("/employees") &&
+                    exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getQuery().contains("code")) {
+                String[] strings = exchange.getRequestURI().getQuery().split("=");
+                if (strings.length != 2) return;
+                res = findByCode(Integer.parseInt(strings[1]));
                 requestHandled = true;
             }
 

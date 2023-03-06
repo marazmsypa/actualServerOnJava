@@ -1,12 +1,9 @@
 package org.example;
 
 import com.sun.net.httpserver.HttpServer;
-import org.example.controllers.EmployeeController;
-import org.example.controllers.RequestsController;
-import org.example.data.converter.EmployeesConverter;
-import org.example.data.converter.RequestsConverter;
-import org.example.data.repositories.EmployeeRepository;
-import org.example.data.repositories.RequestsRepository;
+import org.example.controllers.*;
+import org.example.data.converter.*;
+import org.example.data.repositories.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,8 +23,23 @@ public class Main {
         RequestsRepository requestsRepository = new RequestsRepository(requestsConverter);
         RequestsController requestsController = new RequestsController(requestsRepository);
 
+        RequestsStatusesConverter requestsStatConverter = new RequestsStatusesConverter();
+        RequestStatusesReposiory requestsStatRepository = new RequestStatusesReposiory(requestsStatConverter);
+        RequestStatusesController requestsStatController = new RequestStatusesController(requestsStatRepository);
+
+        RequestTypesConverter requestsTypesConverter = new RequestTypesConverter();
+        RequestTypesRepository requestsTypeRepository = new RequestTypesRepository(requestsTypesConverter);
+        RequestTypesController requestsTypeController = new RequestTypesController(requestsTypeRepository);
+
+        SubdivisionsConverter subdConverter = new SubdivisionsConverter();
+        SubdivisionsRepository subdRepository = new SubdivisionsRepository(subdConverter);
+        SubdivisionsController subdController = new SubdivisionsController(subdRepository);
+
         server.createContext("/employees", employeeController);
         server.createContext("/requests", requestsController);
+        server.createContext("/request_types", requestsTypeController);
+        server.createContext("/request_statuses", requestsStatController);
+        server.createContext("/subdivisions", subdController);
 
         server.createContext("/api/hello", (exchange -> {
             if ("GET".equals(exchange.getRequestMethod())) {

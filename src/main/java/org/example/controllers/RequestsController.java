@@ -1,6 +1,8 @@
 package org.example.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
+import org.example.data.extendedModel.ExtendedRequests;
 import org.example.data.model.Employees;
 import org.example.data.model.Requests;
 import org.example.data.repositories.EmployeeRepository;
@@ -20,6 +22,13 @@ public class RequestsController extends BaseController{
         return repository.findALl();
     }
 
+    public List<ExtendedRequests> getAllExtended() {
+        return repository.findALlWithPK();
+    }
+
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public void update(Requests req){ repository.udate(req);}
 
     @Override
     public void handle(HttpExchange exchange) {
@@ -31,6 +40,21 @@ public class RequestsController extends BaseController{
                     exchange.getRequestMethod().equals("GET")) {
                 res = getAll();
                 requestHandled = true;
+            }
+
+            if (exchange.getRequestURI().getPath().equals("/requests") &&
+                    exchange.getRequestMethod().equals("PUT")) {
+                repository.udate(mapper.readValue(exchange.getRequestBody(), Requests.class));
+                res = "Query success";
+                requestHandled = true;
+            }
+
+            if (exchange.getRequestURI().getPath().equals("/requests") &&
+                    exchange.getRequestMethod().equals("GET") && (exchange.getRequestURI().getQuery() != null)) {
+                if (exchange.getRequestURI().getQuery().contains("extend=true")) {
+                    res = getAllExtended();
+                    requestHandled = true;
+                }
             }
 
             if (requestHandled) {

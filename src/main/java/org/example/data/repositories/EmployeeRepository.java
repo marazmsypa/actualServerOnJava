@@ -37,5 +37,23 @@ public class EmployeeRepository {
         return empList;
     }
 
+    public Employees findByCode(Integer code) {
+        Employees emp = new Employees();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery( String.format("select * from user1.employees where code = %s", code));
+            if (!resultSet.first()) return null;
+
+
+            do {
+               emp = converter.convert(resultSet);
+
+            } while (resultSet.next());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return emp;
+    }
+
 
 }
