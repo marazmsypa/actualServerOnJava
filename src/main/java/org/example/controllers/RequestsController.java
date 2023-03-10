@@ -25,14 +25,22 @@ public class RequestsController extends BaseController{
     public List<ExtendedRequests> getAllExtended() {
         return repository.findALlWithPK();
     }
+    public List<ExtendedRequests> getAllUserExtended(Integer id) {
+        return repository.findALlWithPKAndUserInfo(id);
+    }
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public void update(Requests req){ repository.udate(req);}
 
     @Override
     public void handle(HttpExchange exchange) {
         try {
+            if (exchange.getRequestMethod().equalsIgnoreCase("OPTIONS")) {
+                exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+                exchange.getResponseHeaders().set("Access-Control-Allow-Methods","GET,POST,PUT");
+                exchange.getResponseHeaders().set("Access-Control-Allow-Headers","Content-Type,Authorization");
+            }
+
             Object res = null;
             boolean requestHandled = false;
 
@@ -50,9 +58,27 @@ public class RequestsController extends BaseController{
             }
 
             if (exchange.getRequestURI().getPath().equals("/requests") &&
+                    exchange.getRequestMethod().equals("POST")) {
+                repository.postOne(mapper.readValue(exchange.getRequestBody(), Requests.class));
+                res = "Query success";
+                requestHandled = true;
+            }
+
+            String ex = exchange.getRequestURI().getQuery();
+
+            if (exchange.getRequestURI().getPath().equals("/requests") &&
                     exchange.getRequestMethod().equals("GET") && (exchange.getRequestURI().getQuery() != null)) {
-                if (exchange.getRequestURI().getQuery().contains("extend=true")) {
+                if (exchange.getRequestURI().getQuery().contains("extend=true") && !exchange.getRequestURI().getQuery().contains("&")) {
                     res = getAllExtended();
+                    requestHandled = true;
+                }
+            }
+
+            if (exchange.getRequestURI().getPath().equals("/requests") &&
+                    exchange.getRequestMethod().equals("GET") && (exchange.getRequestURI().getQuery() != null)) {
+                if (exchange.getRequestURI().getQuery().contains("extend=true") && exchange.getRequestURI().getQuery().contains("id")) {
+                    String[] split = exchange.getRequestURI().getQuery().split("&");
+                    res = getAllUserExtended(Integer.parseInt(split[1].split("=")[1]));
                     requestHandled = true;
                 }
             }

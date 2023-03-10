@@ -31,17 +31,20 @@ public class EmployeeController extends BaseController {
             boolean requestHandled = false;
 
             if (exchange.getRequestURI().getPath().equals("/employees") &&
-                    exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getQuery().length() == 0) {
+                    exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getQuery() == null) {
                 res = getAll();
                 requestHandled = true;
             }
 
             if (exchange.getRequestURI().getPath().equals("/employees") &&
-                    exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getQuery().contains("code")) {
-                String[] strings = exchange.getRequestURI().getQuery().split("=");
-                if (strings.length != 2) return;
-                res = findByCode(Integer.parseInt(strings[1]));
-                requestHandled = true;
+                    exchange.getRequestMethod().equals("GET") && exchange.getRequestURI().getQuery() != null) {
+                if (exchange.getRequestURI().getQuery().contains("code")){
+                    String[] strings = exchange.getRequestURI().getQuery().split("=");
+                    if (strings.length != 2) return;
+                    res = findByCode(Integer.parseInt(strings[1]));
+                    requestHandled = true;
+                }
+
             }
 
             if (requestHandled) {

@@ -35,25 +35,24 @@ public class Main {
         SubdivisionsRepository subdRepository = new SubdivisionsRepository(subdConverter);
         SubdivisionsController subdController = new SubdivisionsController(subdRepository);
 
+        VisitPurposesConverter visitConverter = new VisitPurposesConverter();
+        VisitPurposesRepository visitRepository = new VisitPurposesRepository(visitConverter);
+        VisitPurposesController visitController = new VisitPurposesController(visitRepository);
+
+        VisitorConverter visitorConverter = new VisitorConverter();
+        VisitorRepository visitorRepository = new VisitorRepository(visitorConverter);
+        VisitorsController visitorController = new VisitorsController(visitorRepository);
+
+        ImagesController imgController = new ImagesController();
+
         server.createContext("/employees", employeeController);
         server.createContext("/requests", requestsController);
         server.createContext("/request_types", requestsTypeController);
         server.createContext("/request_statuses", requestsStatController);
         server.createContext("/subdivisions", subdController);
-
-        server.createContext("/api/hello", (exchange -> {
-            if ("GET".equals(exchange.getRequestMethod())) {
-                String respText = "Hello!";
-                exchange.sendResponseHeaders(200, respText.getBytes().length);
-                OutputStream output = exchange.getResponseBody();
-                output.write(respText.getBytes());
-                output.flush();
-            } else {
-                exchange.sendResponseHeaders(405, -1);
-            }
-            exchange.close();
-        }));
-
+        server.createContext("/visit_purposes", visitController);
+        server.createContext("/visitors", visitorController);
+        server.createContext("/visitor_images", imgController);
         server.setExecutor(null);
         server.start();
     }

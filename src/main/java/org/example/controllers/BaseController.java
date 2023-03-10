@@ -23,6 +23,10 @@ public abstract class BaseController implements HttpHandler {
         OutputStream os = exchange.getResponseBody();
 
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Headers","x-prototype-version,x-requested-with");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Methods","GET,POST,PUT");
+
         exchange.sendResponseHeaders(code, testResBytes.length);
 
         os.write(testResBytes);

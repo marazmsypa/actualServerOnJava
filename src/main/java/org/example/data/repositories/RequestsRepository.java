@@ -65,6 +65,17 @@ public class RequestsRepository {
         return list;
     }
 
+    public List<ExtendedRequests> findALlWithPKAndUserInfo(Integer id) {
+        List<ExtendedRequests> list = findALlWithPK();
+        List<ExtendedRequests> sortedList = new ArrayList<>();
+        for(ExtendedRequests ext : list){
+            if (ext.getVisitor().getId() == id){
+                sortedList.add(ext);
+            }
+        }
+        return sortedList;
+    }
+
     public void udate(Requests request) {
 
         try (Statement statement = connection.createStatement()) {
@@ -80,6 +91,28 @@ public class RequestsRepository {
                     ", is_group=" + request.isIs_group() +
                     ", message='" + request.getMessage() + "'"+
                     " WHERE id=" + request.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void postOne(Requests request){
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(
+                    "INSERT INTO user1.requests" +
+                            "(request_type_id, request_status_id, date_start, date_end, visit_purpose_id, employee_id, group_id, visitor_id, is_group, message)" +
+                            "VALUES(" + request.getRequest_type_id() +
+                            ", " + request.getRequest_status_id() +
+                            ", " + dateConverter(request.getDate_start()) +
+                            ", " + dateConverter(request.getDate_end()) +
+                            ", " + request.getVisit_purpose_id() +
+                            ", " + request.getEmployee_id() +
+                            ", " +  request.getGroup_id() +
+                            ", " + request.getVisitor_id() +
+                            ", " +  request.isIs_group() +
+                            ", '" + request.getMessage() +
+                            "')"
+            );
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

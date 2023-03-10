@@ -1,5 +1,7 @@
 package org.example.data.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Visitors {
@@ -154,7 +156,7 @@ public class Visitors {
         this.image_path = image_path;
     }
 
-    public String getPassport_scan_path() {
+    public String get_passport_scan_path() {
         return passport_scan_path;
     }
 

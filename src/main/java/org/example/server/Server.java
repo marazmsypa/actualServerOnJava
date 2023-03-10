@@ -59,6 +59,7 @@ public class Server {
                 OutputStream os = exchange.getResponseBody();
 
                 exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+                exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
                 exchange.sendResponseHeaders(200, response.length);
 
                 os.write(response);
