@@ -3,6 +3,7 @@ package org.example.data.repositories;
 import org.example.data.converter.ModelConverter;
 import org.example.data.model.Employees;
 import org.example.data.model.Visitors;
+import org.example.data.model.Visits;
 import org.example.database.Database;
 
 import java.sql.Connection;
@@ -79,7 +80,7 @@ public class VisitorRepository {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("INSERT INTO user1.visitors" +
                     "(surname, name, patronymic, phone, email, organization, note, birth_date, passport_series, passport_number, " +
-                    "image_path, passport_scan_path, login, password, is_in_black_list)" +
+                    "image_path, passport_scan_path, login, password, is_in_black_list, black_list_reason)" +
                     "VALUES('" + visitor.getSurname() +
                     "', '" + visitor.getName() +
                     "', '" + visitor.getPatronymic() +
@@ -91,10 +92,37 @@ public class VisitorRepository {
                     ", '" + visitor.getPassport_series() +
                     "', '" + visitor.getPassport_number() +
                     "', '" + visitor.getImage_path() +
-                    "', '" + visitor.get_passport_scan_path() +
+                    "', '" + visitor.getPassport_scan_path() +
                     "', '" + visitor.getLogin() +
                     "', '" + visitor.getPassword() +
-                    "', 0)");
+                    "', 0, " + null +
+                    ")");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void update(Visitors visitor){
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("UPDATE user1.visitors " +
+                    "SET surname='" + visitor.getSurname() +
+                    "', name='" + visitor.getName() +
+                    "', patronymic='" + visitor.getPatronymic() +
+                    "', phone='" + visitor.getPhone() +
+                    "', email='" + visitor.getEmail() +
+                    "', organization='" + visitor.getOrganization() +
+                    "', note='" + visitor.getNote() +
+                    "', birth_date=" + dateConverter(visitor.getBirth_date()) +
+                    ", passport_series='" + visitor.getPassport_series() +
+                    "', passport_number='" + visitor.getPassport_number() +
+                    "', image_path='" + visitor.getImage_path() +
+                    "', passport_scan_path='" + visitor.getPassport_scan_path() +
+                    "', login='" + visitor.getLogin() +
+                    "', password='" + visitor.getPassword() +
+                    "', is_in_black_list=" + visitor.isIs_in_black_list() +
+                    ", black_list_reason='" + visitor.getBlack_list_reason() +
+                    "' " +
+                    "WHERE id=" +  visitor.getId() );
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

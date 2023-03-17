@@ -43,6 +43,10 @@ public class Main {
         VisitorRepository visitorRepository = new VisitorRepository(visitorConverter);
         VisitorsController visitorController = new VisitorsController(visitorRepository);
 
+        VisitsConverter visisConverter = new VisitsConverter();
+        VisitsRepository visitsRepository = new VisitsRepository(visisConverter);
+        VisitsController visitsController = new VisitsController(visitsRepository);
+
         ImagesController imgController = new ImagesController();
 
         server.createContext("/employees", employeeController);
@@ -53,6 +57,7 @@ public class Main {
         server.createContext("/visit_purposes", visitController);
         server.createContext("/visitors", visitorController);
         server.createContext("/visitor_images", imgController);
+        server.createContext("/visits", visitsController);
         server.setExecutor(null);
         server.start();
     }

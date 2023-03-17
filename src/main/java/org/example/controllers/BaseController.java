@@ -16,8 +16,10 @@ public abstract class BaseController implements HttpHandler {
     }
 
     public void writeResultToExchange(Object res, HttpExchange exchange, int code) throws IOException {
-        byte[] testResBytes = mapper
-                .writeValueAsString(res)
+         String json = mapper
+                .writeValueAsString(res);
+
+        byte[] testResBytes = json
                 .getBytes(StandardCharsets.UTF_8);
 
         OutputStream os = exchange.getResponseBody();

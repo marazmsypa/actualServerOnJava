@@ -1,6 +1,5 @@
 package org.example.data.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
@@ -38,10 +37,13 @@ public class Visitors {
 
     private boolean is_in_black_list;
 
+    private String black_list_reason;
+
+
     public Visitors() {
     }
 
-    public Visitors(Integer id, String surname, String name, String patronymic, String phone, String email, String organization, String note, Date birth_date, String passport_series, String passport_number, String image_path, String passport_scan_path, String login, String password, boolean is_in_black_list) {
+    public Visitors(Integer id, String surname, String name, String patronymic, String phone, String email, String organization, String note, Date birth_date, String passport_series, String passport_number, String image_path, String passport_scan_path, String login, String password, boolean is_in_black_list, String black_list_reason) {
         this.id = id;
         this.surname = surname;
         this.name = name;
@@ -58,6 +60,7 @@ public class Visitors {
         this.login = login;
         this.password = password;
         this.is_in_black_list = is_in_black_list;
+        this.black_list_reason = black_list_reason;
     }
 
     public Integer getId() {
@@ -156,10 +159,6 @@ public class Visitors {
         this.image_path = image_path;
     }
 
-    public String get_passport_scan_path() {
-        return passport_scan_path;
-    }
-
     public void setPassport_scan_path(String passport_scan_path) {
         this.passport_scan_path = passport_scan_path;
     }
@@ -189,6 +188,19 @@ public class Visitors {
         this.is_in_black_list = is_in_black_list;
     }
 
+
+    public String getPassport_scan_path() {
+        return passport_scan_path;
+    }
+
+    public String getBlack_list_reason() {
+        return black_list_reason;
+    }
+
+    public void setBlack_list_reason(String black_list_reason) {
+        this.black_list_reason = black_list_reason;
+    }
+
     @Override
     public String toString() {
         return "Visitors{" +
@@ -208,6 +220,7 @@ public class Visitors {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", is_in_black_list=" + is_in_black_list +
+                ", black_list_reason='" + black_list_reason + '\'' +
                 '}';
     }
 }

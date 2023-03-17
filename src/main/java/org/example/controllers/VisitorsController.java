@@ -90,6 +90,15 @@ public class VisitorsController extends BaseController {
                 requestHandled = true;
             }
 
+            if (exchange.getRequestURI().getPath().equals("/visitors") &&
+                    exchange.getRequestMethod().equals("PUT")) {
+                InputStream in = exchange.getRequestBody();
+
+                repository.update(mapper.readValue(in, Visitors.class));
+                res = "Query success";
+                requestHandled = true;
+            }
+
             if (requestHandled) {
                 writeResultToExchange(res, exchange);
             } else {

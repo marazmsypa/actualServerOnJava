@@ -11,10 +11,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class RequestsRepository {
     private static final String bigQuery = """
-            SELECT employees.code AS "employees.code", employees.division_id AS "employees.division_id", employees.id AS "employees.id", employees.name AS "employees.name", employees.patronymic AS "employees.patronymic", employees.subdivision_id AS "employees.subdivision_id", employees.surname AS "employees.surname", request_statuses.id AS "requeststatuses.id", request_statuses.name AS "requeststatuses.name", request_types.id AS "requesttypes.id", request_types.name AS "requesttypes.name", requests.date_end AS "requests.date_end", requests.date_start AS "requests.date_start", requests.id AS "requests.id", requests.group_id AS "requests.group_id", requests.message AS "requests.message", requests.is_group AS "requests.is_group", visit_purposes.id AS "visitpurposes.id", visit_purposes.name AS "visitpurposes.name", visitors.birth_date AS "visitors.birth_date", visitors.email AS "visitors.email", visitors.id AS "visitors.id", visitors.image_path AS "visitors.image_path", visitors.is_in_black_list AS "visitors.is_in_black_list", visitors.login AS "visitors.login", visitors.name AS "visitors.name", visitors.note AS "visitors.note", visitors.organization AS "visitors.organization", visitors.passport_number AS "visitors.passport_number", visitors.passport_scan_path AS "visitors.passport_scan_path", visitors.passport_series AS "visitors.passport_series", visitors.password AS "visitors.password", visitors.patronymic AS "visitors.patronymic", visitors.phone AS "visitors.phone", visitors.surname AS "visitors.surname"
+            SELECT employees.code AS "employees.code", employees.division_id AS "employees.division_id", employees.id AS "employees.id", employees.name AS "employees.name", employees.patronymic AS "employees.patronymic", employees.subdivision_id AS "employees.subdivision_id", employees.surname AS "employees.surname", request_statuses.id AS "requeststatuses.id", request_statuses.name AS "requeststatuses.name", request_types.id AS "requesttypes.id", request_types.name AS "requesttypes.name", requests.date_end AS "requests.date_end", requests.date_start AS "requests.date_start", requests.id AS "requests.id", requests.group_id AS "requests.group_id", requests.message AS "requests.message", requests.is_group AS "requests.is_group", visit_purposes.id AS "visitpurposes.id", visit_purposes.name AS "visitpurposes.name", visitors.birth_date AS "visitors.birth_date", visitors.email AS "visitors.email", visitors.id AS "visitors.id", visitors.image_path AS "visitors.image_path", visitors.is_in_black_list AS "visitors.is_in_black_list", visitors.black_list_reason AS "visitors.black_list_reason", visitors.login AS "visitors.login", visitors.name AS "visitors.name", visitors.note AS "visitors.note", visitors.organization AS "visitors.organization", visitors.passport_number AS "visitors.passport_number", visitors.passport_scan_path AS "visitors.passport_scan_path", visitors.passport_series AS "visitors.passport_series", visitors.password AS "visitors.password", visitors.patronymic AS "visitors.patronymic", visitors.phone AS "visitors.phone", visitors.surname AS "visitors.surname"
             FROM user1.requests
             inner join request_types on requests.request_type_id = request_types.id
             inner join request_statuses on requests.request_status_id = request_statuses.id
@@ -69,7 +70,7 @@ public class RequestsRepository {
         List<ExtendedRequests> list = findALlWithPK();
         List<ExtendedRequests> sortedList = new ArrayList<>();
         for(ExtendedRequests ext : list){
-            if (ext.getVisitor().getId() == id){
+            if (Objects.equals(ext.getVisitor().getId(), id)){
                 sortedList.add(ext);
             }
         }
